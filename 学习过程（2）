@@ -1,0 +1,115 @@
+shell 编程常见实例
+1.查找当前目录中所有大于500M的文件,把这些文件名写到一个文本文件中，并统计其个数。
+#!/bin/bash
+count=0
+for file in `find ./ -size +512000k`
+do
+count=`expr $count + 1`
+echo $file >> new
+done
+echo "$count"
+2.在目录/tmp下找到100个以abc开头的文件，然后把这些文件的第一行保存到文件new中。
+#!/bin/bash
+count=0
+for file in `find /tmp -name "abc*"`
+do
+head -n1 $file>>new
+count=`expr $count+1 `
+if [ $count -gt 100 ];then
+break
+fi
+done
+3.把文件b中有的，但是文件a中没有的所有行，保存为文件c，并统计c的行数。
+grep -vf a b | cat > c 
+grep -vf a b | wc -l
+4.判断一文件是不是块或字符设备文件，如果是将其拷贝到 /dev 目录下
+read -p "input a file:" file
+if [ -c $file -o -b $file ];then
+cp $file /dev/
+fi
+5.每隔10分钟监控一次，监控/usr下如果大于5G，发邮件给管理员
+#!/bin/bash
+while true
+do
+n=`du -s /usr|cut -f1`
+if [ $n -gt 1 ];then
+mail -s "greater"295322935@qq.com<c
+fi
+sleep 600
+done 
+6.从a.log文件中提取包含"WARNING"或"FATAL"，同时不包含"IGNOR"的行，然后提取以":"分割的第5个字段
+grep -E "WARNING|FATAL" a.log |grep -v "IGNOR" |cut -f5 -d':'
+7.编写一个脚本，进行简单的减法运算，要求提示输入变量
+#!/bin/bash
+if [ $# = 2 ];then
+num3=`expr $1 - $2 `
+else
+read -p "input a number:" num1
+read -p "input another number:" num2
+num3=`expr $num1 - $num2 `
+fi
+echo $num3
+8.把某个目录下的文件扩展名改为bat，再以时间为文件名压缩打包存放到某个目录。
+#!/bin/bash
+if test $# -eq 1 -a -d $1 ;then
+for file in `ls $1`
+do
+mv $file $file.bat
+done
+filename=date+%y%m%d
+tar -cjvf $filename.tar.bz2
+else
+echo "input dir"
+read dir
+for file in `ls $dir`
+do
+mv $file $file.bat
+done
+filename=date+%y%m%d
+tar -cjvf $filename.tar.bz2
+fi
+9.判断一个数是不是完数。打印出1-1000之间的完数。 完数就是约数的和等于自身2倍的数。(6,28,496)
+(1)
+#!/bin/bash
+sub()
+{
+    i=1;
+    sum=0;
+    while [ $i -le $num ]
+    do
+        let "m=num%i"
+        if [ $m -eq 0 ]
+        then
+            let "sum=sum+i"
+        fi
+        let "i=i+1"
+    done
+    let "a=2*num"
+    if [ $a -eq $sum ]
+    then
+        echo $num
+    fi
+}
+num=1
+while [ $num -le 1000 ]
+do
+    sub
+    let "num = num+1"
+done
+(2)
+#!/bin/bash
+for((i=1;i<=1000;i++))
+do
+sum=0
+for((j=1;j<=i;j++))
+do
+m=`expr $i % $j`
+if [ $m -eq 0 ];then
+sum=`expr $sum + $j`
+fi
+done
+y=`expr $i \* 2 `
+if [ $y -eq $sum ];then
+echo $i
+fi
+done
