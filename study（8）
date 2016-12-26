@@ -1,0 +1,87 @@
+获取本机IP地址
+#/bin/bash
+ifconfig | grep "inet addr:" | awk '{ print $2 }'| sed 's/addr://g'
+
+查找最大文件
+#/bin/bash
+a=0
+for  name in *.*
+do
+     b=$(ls -l $name | awk '{print $5}')
+    if test $b -ge $a
+    then a=$b
+         namemax=$name
+     fi
+done
+echo "the max file is $namemax"
+查找当前网段内IP用户，重定向到ip.txt文件中
+#/bin/bash
+a=1
+while :
+do
+    a=$(($a+1))
+    if test $a -gt 255
+    then break
+    else
+        echo $(ping -c 1 192.168.0.$a | grep "ttl" | awk '{print $4}'| sed 's/://g')
+        ip=$(ping -c 1 192.168.0.$a | grep "ttl" | awk '{print $4}'| sed 's/://g')
+        echo $ip >> ip.txt
+    fi
+done
+
+打印当前用户
+#/bin/bash
+echo "Current User is :"
+echo $(ps | grep "$$" | awk '{print $2}')
+case语句练习
+#!/bin/bash
+clear
+echo "enter a number from 1 to 5:"
+read num
+case $num in
+    1) echo "you enter 1"
+    ;;
+    2) echo "you enter 2"
+    ;;
+    3) echo "you enter 3"
+    ;;
+    4) echo "you enter 4"
+    ;;
+    5) echo "you enter 5"
+    ;;
+    *) echo "error"
+    ;;
+esac
+yes/no返回不同的结构
+#!/bin/bash
+clear
+echo "enter [y/n]:"
+read a
+case $a in
+    y|Y|Yes|YES) echo "you enter $a"
+    ;;
+    n|N|NO|no) echo "you enter $a"
+    ;;
+    *) echo "error"
+    ;;
+esac
+
+杀进程
+ #/bin/bash
+pid=`ps -ef | grep '进程相关内容' | grep -v 'grep' | awk '{ print $2}'`
+if [ -n "$pid" ]; then
+        kill -9 $pid
+fi
+ 23.内置命令的使用
+#/bin/bash
+    clear
+        echo "Hello, $USER"
+        echo  
+        echo "Today 's date id `date`"
+        echo
+        echo "the user is :"
+        who
+        echo
+        echo "this is `uname -s`"
+        echo
+        echo "that's all folks! "
