@@ -1,0 +1,32 @@
+如果/export/um_lpp_source下有文件，那么将其文件系统大小改为3G
+#/bin/bash
+while line=`ls /export/um_lpp_source`
+do
+        if test $line=""
+        then  echo "NULL"
+             sleep 1
+    else echo $line
+                chfs -a size=3G /export/um_lpp_source
+                 exit 0
+        fi
+done
+测试IP地址
+#/bin/bash
+for i in  1 2 3 4 5 6 7 8 9 
+do
+    echo "the number of $i computer is "
+    ping -c 1 192.168.0.$i
+done
+如果test.log的大小大于0，那么将/opt目录下的*.tar.gz文件
+ #/bin/sh
+a=2
+while name="test.log"
+do
+        sleep 1
+        b=$(ls -l $name | awk '{print $5}')
+        if test $b -ge $a
+        #then echo "OK"
+    then `cp /opt/*.tar.gz .`
+        exit 0
+        fi
+done
