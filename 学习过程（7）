@@ -1,0 +1,53 @@
+打印读取的内容，为下面的例子做准备
+#/bin/bash
+while read name
+do
+echo $name
+done
+从0.sh中读取内容并打印
+#/bin/bash
+while read line
+do
+    echo $line
+done < 0.sh
+读取a.c中的内容并做加1运算
+#/bin/bash
+test -e a.c
+while read line
+do
+    a=$(($line+1))
+done < a.c
+echo $a
+普通无参数函数
+#/bin/bash
+p ()
+{
+    echo "hello"
+}
+p
+给函数传递参数
+#/bin/bash
+p_num ()
+{
+    num=$1
+    echo $num
+}
+for n in $@
+do
+    p_num $n
+done
+创建文件夹
+#/bin/bash
+while :
+do
+    echo "please input file's name:"
+    read a
+    if test -e /root/$a
+    then
+         echo "the file is existing Please input new file name:"
+    else
+        mkdir $a
+        echo "you aye sussesful!"
+        break 
+    fi
+done
