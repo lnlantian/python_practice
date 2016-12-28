@@ -1,0 +1,84 @@
+yes/no返回不同的结构
+#!/bin/bash
+clear
+echo "enter [y/n]:"
+read a
+case $a in
+    y|Y|Yes|YES) echo "you enter $a"
+    ;;
+    n|N|NO|no) echo "you enter $a"
+    ;;
+    *) echo "error"
+    ;;
+esac
+杀进程
+
+ #/bin/bash
+pid=`ps -ef | grep '进程相关内容' | grep -v 'grep' | awk '{ print $2}'`
+if [ -n "$pid" ]; then
+        kill -9 $pid
+fi
+内置命令的使用
+#/bin/bash
+    clear
+        echo "Hello, $USER"
+        echo
+        
+        echo "Today 's date id `date`"
+
+        echo
+
+        echo "the user is :"
+        who
+        echo
+
+        echo "this is `uname -s`"
+        echo
+
+        echo "that's all folks! "
+#/bin/bash
+打印无密码用户
+
+#/bin/bash
+echo "No Password User are :"
+echo $(cat /etc/shadow | grep "!!" | awk 'BEGIN { FS=":" }{print $1}')
+
+#/bin/bash
+
+    clear
+        echo "Hello, $USER"
+        echo
+        
+        echo "Today 's date id `date`"
+
+        echo
+
+        echo "the user is :"
+        who
+        echo
+
+        echo "this is `uname -s`"
+        echo
+
+        echo "that's all folks! "
+检查端口号是否已启动
+#!/bin/bash
+n=1
+echo "检查xxx服务..."
+while true
+do
+        if test $n -gt 20
+        then 
+                echo "xxx服务启动失败"
+                break
+        fi
+                
+        sleep 5
+        n=$(($n+1))
+        port=`netstat -antp | grep "0.0.0.0:8080"`
+        if [ ${#port} -gt 3 ]; then
+                echo "xxx服务已经启动"
+                break;
+        fi
+done
+
