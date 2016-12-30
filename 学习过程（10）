@@ -1,0 +1,236 @@
+1、连接Mysql
+格式： mysql -h主机地址 -u用户名 －p用户密码
+
+1、连接到本机上的MYSQL。
+
+2、连接到远程主机上的MYSQL。
+
+3、退出MYSQL命令： exit （回车）
+ 
+2、修改密码
+格式：mysqladmin -u用户名 -p旧密码 password 新密码
+
+1、给root加个密码ab12。
+首先在DOS下进入目录mysql\bin，然后键入以下命令
+    mysqladmin -u root -password ab12
+注：因为开始时root没有密码，所以-p旧密码一项就可以省略了。
+
+2、再将root的密码改为djg345。
+    mysqladmin -u root -p ab12 password djg345
+3、增加新用户
+格式：grant select on 数据库.* to 用户名@登录主机 identified by “密码”
+
+4.1 创建数据库
+命令：create database <数据库名>
+
+例1：建立一个名为xhkdb的数据库
+   mysql> create database xhkdb;
+
+①CREATE DATABASE 数据库名;
+
+②GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER ON 数据库名.* TO 数据库名@localhost IDENTIFIED BY '密码';
+
+③SET PASSWORD FOR '数据库名'@'localhost' = OLD_PASSWORD('密码');
+
+依次执行3个命令完成数据库创建。注意：中文 “密码”和“数据库”是户自己需要设置的。
+4.2 显示数据库
+命令：show databases （注意：最后有个s）
+mysql> show databases;
+
+1、修改MYSQL的配置文件：my.ini里面修改default-character-set=gbk
+2、代码运行时修改：
+   ①Java代码：jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=gbk
+   ②PHP代码：header("Content-Type:text/html;charset=gb2312");
+   ③C语言代码：int mysql_set_character_set( MYSQL * mysql, char * csname)；
+4.3 删除数据库
+命令：drop database <数据库名>
+例如：删除名为 xhkdb的数据库
+mysql> drop database xhkdb;
+   mysql> drop database drop_database;
+   Query OK, 0 rows affected (0.00 sec)
+
+   mysql> drop database drop_database;
+   ERROR 1008 (HY000): Can't drop database 'drop_database'; database doesn't exist
+      //发生错误，不能删除'drop_database'数据库，该数据库不存在。
+   mysql> drop database if exists drop_database;
+   Query OK, 0 rows affected, 1 warning (0.00 sec)//产生一个警告说明此数据库不存在
+   mysql> create database drop_database;
+   Query OK, 1 row affected (0.00 sec)
+   mysql> drop database if exists drop_database;//if exists 判断数据库是否存在，不存在也不产生错误
+   Query OK, 0 rows affected (0.00 sec)
+4.4 连接数据库
+命令： use <数据库名>
+   mysql> use xhkdb;
+
+use 语句可以通告MySQL把db_name数据库作为默认（当前）数据库使用，用于后续语句。该数据库保持为默认数据库，直到语段的结尾，或者直到发布一个不同的USE语句：
+   mysql> USE db1;
+   mysql> SELECT COUNT(*) FROM mytable;   # selects from db1.mytable
+   mysql> USE db2;
+   mysql> SELECT COUNT(*) FROM mytable;   # selects from db2.mytable
+
+使用USE语句为一个特定的当前的数据库做标记，不会阻碍您访问其它数据库中的表。下面的例子可以从db1数据库访问作者表，并从db2数据库访问编辑表：
+   mysql> USE db1;
+   mysql> SELECT author_name,editor_name FROM author,db2.editor
+       ->        WHERE author.editor_id = db2.editor.editor_id;
+
+4.5 当前选择的数据库
+命令：mysql> select database();
+
+MySQL中SELECT命令类似于其他编程语言里的print或者write，你可以用它来显示一个字符串、数字、数学表达式的结果等等。如何使用MySQL中SELECT命令的特殊功能？
+
+1.显示MYSQL的版本
+mysql> select version(); 
+
+2. 显示当前时间
+mysql> select now(); 
+
+3. 显示年月日
+SELECT DAYOFMONTH(CURRENT_DATE); 
+
+SELECT MONTH(CURRENT_DATE); 
+
+SELECT YEAR(CURRENT_DATE); 
+
+1 row in set (0.00 sec) 
+
+4. 显示字符串
+mysql> SELECT "welecome to my blog!"; 
+
+5. 当计算器用
+select ((4 * 4) / 10 ) + 25; 
+
+6. 串接字符串
+select CONCAT(f_name, " ", l_name) 
+AS Name 
+from employee_data 
+where title = 'Marketing Executive'; 
+
+3 rows in set (0.00 sec) 
+
+5.1 创建数据表
+命令：create table <表名> ( <字段名1> <类型1> [,..<字段名n> <类型n>]);
+
+字段名	数字类型	数据宽度	是否为空	是否主键	自动增加	默认值
+id	int	4	否	primary key	auto_increment	 
+name	char	20	否	 	 	 
+sex	int	4	否	 	 	0
+degree	double	16	是	 	 	 
+mysql> create table MyClass(
+> id int(4) not null primary key auto_increment,
+> name char(20) not null,
+> sex int(4) not null default '0',
+> degree double(16,2));
+5.3 删除数据表
+命令：drop table <表名>
+
+   mysql> drop table MyClass;
+
+5.4 表插入数据
+命令：insert into <表名> [( <字段名1>[,..<字段名n > ])] values ( 值1 )[, ( 值n )]
+
+5.5 查询表中的数据
+1)、查询所有行
+命令： select <字段1，字段2，...> from < 表名 > where < 表达式 >
+   mysql> select * from MyClass;
+   
+2）、查询前几行数据
+mysql> select * from MyClass order by id limit 0,2;
+
+5.6 删除表中数据
+命令：delete from 表名 where 表达式
+
+下面是一个删除数据前后表的对比。
+FirstName	LastName	Age
+Peter	Griffin	35
+Glenn	Quagmire	33
+
+5.7 修改表中数据
+语法：update 表名 set 字段=新值,… where 条件
+   mysql> update MyClass set name='Mary' where id=1;
+
+5.8 增加字段
+命令：alter table 表名 add字段 类型 其他;
+
+加索引
+   mysql> alter table 表名 add index 索引名 (字段名1[，字段名2 …]);
+
+加主关键字的索引
+  mysql> alter table 表名 add primary key (字段名);
+
+加唯一限制条件的索引
+   mysql> alter table 表名 add unique 索引名 (字段名);
+
+删除某个索引
+   mysql> alter table 表名 drop index 索引名;
+例子： mysql>alter table employee drop index emp_name;
+
+增加字段：
+mysql> ALTER TABLE table_name ADD field_name field_type;
+
+修改原字段名称及类型：
+mysql> ALTER TABLE table_name CHANGE old_field_name new_field_name field_type;
+
+删除字段：
+MySQL ALTER TABLE table_name DROP field_name;
+5.9 修改表名
+命令：rename table 原表名 to 新表名;
+
+   mysql> rename table MyClass to YouClass;
+
+6、备份数据库
+命令在DOS的[url=file://\\mysql\\bin]\\mysql\\bin[/url]目录下执行
+
+1.导出整个数据库
+导出文件默认是存在mysql\bin目录下
+    mysqldump -u 用户名 -p 数据库名 > 导出的文件名
+    mysqldump -u user_name -p123456 database_name > outfile_name.sql
+
+2.导出一个表
+    mysqldump -u 用户名 -p 数据库名 表名> 导出的文件名
+    mysqldump -u user_name -p database_name table_name > outfile_name.sql
+
+3.导出一个数据库结构
+    mysqldump -u user_name -p -d –add-drop-table database_name > outfile_name.sql
+    -d 没有数据 –add-drop-table 在每个create语句之前增加一个drop table
+
+4.带语言参数导出
+    mysqldump -uroot -p –default-character-set=latin1 –set-charset=gbk –skip-opt database_name > outfile_name.sql
+
+例如，将aaa库备份到文件back_aaa中：
+　　[root@test1 root]# cd　/home/data/mysql
+　　[root@test1 mysql]# mysqldump -u root -p --opt aaa > back_aaa
+7.1 一个建库和建表的实例1
+drop database if exists school; //如果存在SCHOOL则删除
+create database school; //建立库SCHOOL
+use school; //打开库SCHOOL
+create table teacher //建立表TEACHER
+(
+    id int(3) auto_increment not null primary key,
+    name char(10) not null,
+    address varchar(50) default ‘深圳’,
+    year date
+); //建表结束
+
+//以下为插入字段
+insert into teacher values(”,’allen’,'大连一中’,'1976-10-10′);
+insert into teacher values(”,’jack’,'大连二中’,'1975-12-23′);
+
+2、或者进入命令行后使用 mysql> source c:\\school.sql; 也可以将school.sql文件导入数据库中。
+
+7.2 一个建库和建表的实例2
+drop database if exists school; //如果存在SCHOOL则删除
+create database school; //建立库SCHOOL
+use school; //打开库SCHOOL
+create table teacher //建立表TEACHER
+(
+    id int(3) auto_increment not null primary key,
+    name char(10) not null,
+    address varchar(50) default ''深圳'',
+    year date
+); //建表结束
+
+//以下为插入字段
+insert into teacher values('''',''glchengang'',''深圳一中'',''1976-10-10'');
+insert into teacher values('''',''jack'',''深圳一中'',''1975-12-23'');
+
+ 
