@@ -1,0 +1,11 @@
+OpenSSL库的方法，可以很便捷地来对数据进行RSA加密
+使用openssl命令生成私钥：openssl genrsa -out private.pem -f4 1024
+指数值为10001，然后加密
+    from OpenSSL.crypto import load_privatekey, FILETYPE_PEM, sign  
+    import base64  
+    
+    key = load_privatekey(FILETYPE_PEM, open("private.pem").read())  
+    content = 'test_message'   
+    d =  sign(key, content, 'sha1')  
+    b = base64.b64encode(d)   
+    print b  
