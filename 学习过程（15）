@@ -1,0 +1,66 @@
+一、Redis介绍
+
+Redis是当前比较热门的NOSQL系统之一，它是一个key-value存储系统。和Memcache类似，但很大程度补偿了Memcache的不足，它支持存储的value类型相对更多，包括string、list、set、zset和hash。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作。在此基础上，Redis支持各种不同方式的排序。
+ 和Memcache一样，Redis数据都是缓存在计算机内存中，不同的是，Memcache只能将数据缓存到内存中，无法自动定期写入硬盘，这就表示，一断电或重启，内存清空，数据丢失。所以Memcache的应用场景适用于缓存无需持久化的数据。而Redis不同的是它会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，实现数据的持久化。
+
+二、Redis的安装
+
+下面介绍在Linux环境下，Redis的安装与部署
+1、首先上官网下载Redis 压缩包，地址：http://redis.io/download 下载稳定版3.0.7即可
+
+2、通过远程管理工具，将压缩包拷贝到Linux服务器中，执行解压操作
+
+3、执行make 对Redis解压后文件进行编译
+编译完成之后，可以看到解压文件redis-3.0.7 中会有对应的src、conf等文件夹，这和windows下安装解压的文件一样，大部分安装包都会有对应的类文件、配置文件和一些命令文件。
+
+4、编译成功后，进入src文件夹，执行make install进行Redis安装
+
+5、安装完成，界面如下
+
+三、Redis的部署
+
+安装成功后，下面对Redis 进行部署
+
+1、首先为了方便管理，将Redis文件中的conf配置文件和常用命令移动到统一文件中
+
+a)创建bin和redis.conf文件
+
+mkdir -p/usr/local/redis/bin
+mkdir -p/usr/local/redis/ect
+
+b)执行Linux文件移动命令：
+
+mv /lamp/redis-3.0.7/redis.conf /usr/local/redis/etc
+cd /lamp/redis-3.0.7/src
+mv mkreleasdhdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server /usr/local/redis/bin
+
+2、执行Redis-server 命令，启动Redis 服务
+
+3、后台启动redis服务
+
+a)首先编辑conf文件，将daemonize属性改为yes（表明需要在后台运行）
+
+cd etc/
+Vi redis.conf
+b)再次启动redis服务，并指定启动服务配置文件
+
+redis-server /usr/local/redis/etc/redis.conf
+
+4、服务端启动成功后，执行redis-cli启动Redis 客户端，查看端口号
+
+四、总结Linux 、Redis 操作常用命令
+Linux：
+cd /usr 从子文件夹进入上级文件夹usr
+cd local 从父到子
+mv /A /B 将文件A移动到B
+vi usr/local/redis/redis.conf 编辑redis.conf 文件
+:wq 保存修改，并退出
+
+Redis：
+
+Redis-server /usr..../redis.conf 启动redis服务，并指定配置文件
+Redis-cli 启动redis 客户端
+Pkill redis-server 关闭redis服务
+Redis-cli shutdown 关闭redis客户端
+Netstat -tunpl|grep 6379 查看redis 默认端口号6379占用情况
+
