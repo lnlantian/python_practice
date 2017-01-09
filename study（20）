@@ -1,0 +1,45 @@
+python对多国语言的处理是支持的很好的，它可以处理现在任意编码的字符，这里深入的研究一下python对多种不同语言的处理。
+有一点需要清楚的是，当python要做编码转换的时候，会借助于内部的编码，转换过程是这样的：
+原有编码 -> 内部编码 -> 目的编码 
+python的内部是使用unicode来处理的，但是unicode的使用需要考虑的是它的编码格式有两种，一是UCS-2，它一共有65536个码 位，
+另一种是UCS-4，它有2147483648g个码位。对于这两种格式，python都是支持的，这个是在编译时通过--enable- unicode=ucs2或--enable-unicode=ucs4
+来指定的。那么我们自己默认安装的python有的什么编码怎么来确定呢？有一个 办法，就是通过sys.maxunicode的值来判断： 
+import  sys
+print  sys.maxunicode
+
+a  =   " 风卷残云 " 
+print  type(a)
+b  =  a.unicode(a,  " gb2312 " )
+print  type(b)
+输出：
+<type 'str'>
+<type 'unicode'>
+c  =  b.encode( " utf-8 " )
+print  c
+# -*- encoding: gb2312 -*- 
+import  codecs, sys
+print   ' - ' * 60 
+#  创建gb2312编码器 
+look   =  codecs.lookup( " gb2312 " )
+#  创建utf-8编码器 
+look2  =  codecs.lookup( " utf-8 " )
+a  =   " 我爱北京 " 
+print  len(a), a
+#把a编码为内部的unicode, 但为什么方法名为decode呢，我的理解是把gb2312的字符串解码为unicode 
+b  =  look.decode(a)
+#返回的b[0]是数据，b[1]是长度，这个时候的类型是unicode了 
+print  b[ 1 ], b[0], type(b[0])
+#把内部编码的unicode转换为gb2312编码的字符串，encode方法会返回一个字符串类型 
+b2  =  look.encode(b[0])
+#发现不一样的地方了吧？转换回来之后，字符串长度由14变为了7! 现在的返回的长度才是真正的字数，原来的是字节数 
+print  b2[ 1 ], b2[0], type(b2[0])
+#虽然上面返回了字数，但并不意味着用len求b2[0]的长度就是7了，仍然还是14，仅仅是codecs.encode会统计字数 
+print  len(b2[0])
+上面的代码就是codecs的使用，是最常见的用法。另外还有一个问题就是，如果我们处理的文件里的字符编码是其他类型的呢？这个读取进行做处理也需要特殊的处理的。codecs也提供了方法.
+# -*- encoding: gb2312 -*- 
+import  codecs, sys
+#用codecs提供的open方法来指定打开的文件的语言编码，它会在读取的时候自动转换为内部unicode 
+bfile  =  codecs.open( " dddd.txt " ,  ' r ' ,  " big5 " ) 
+ss  =  bfile.read()
+bfile.close()
+print  ss, type(ss)
