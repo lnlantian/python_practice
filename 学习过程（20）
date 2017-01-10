@@ -1,0 +1,58 @@
+###Keepalived 安装与配置
+ 
+一、环境说明
+1、操作系统内核版本：2.6.9-78.ELsmp
+2、Keepalived软件版本：keepalived-1.1.20.tar.gz
+ 
+二、环境配置
+1、主Keepalived服务器IP地址 
+2、备Keepalived服务器IP地址  
+3、Keepalived虚拟IP地址 
+ 
+三、软件下载地址
+http://www.keepalived.org/software/keepalived-1.1.20.tar.gz
+四、安装流程
+1、上传Keepalived至/home/目录
+2、解压Keepalived软件
+[root@localhost home]# tar -zxvf keepalived-1.1.20.tar.gz 
+[root@localhost home]# cd keepalived-1.1.20
+[root@localhost keepalived-1.1.20]# ln -s /usr/src/kernels/2.6.9-78.EL-i686/usr/src//linux
+[root@localhost keepalived-1.1.20]# ./configure 
+3、提示
+4、编译以及编译安装
+[root@localhost keepalived-1.1.20]# make && make install
+5、将types.h调用的部分注释掉即可解决4出现的问题
+vi/usr/src/kernels/2.6.9-78.EL-i686/include/linux/types.h          
+6、重新编译以及编译安装
+[root@localhost keepalived-1.1.20]# make && make install
+Linux下Keepalived <wbr>安装与配置 
+7、修改配置文件路径
+[root@localhostkeepalived-1.1.20]#cp/usr/local/etc/rc.d/init.d/keepalived/etc/rc.d/init.d/
+[root@localhostkeepalived-1.1.20]# cp /usr/local/etc/sysconfig/keepalived /etc/sysconfig/
+[root@localhost keepalived-1.1.20]# mkdir /etc/keepalived
+[root@localhostkeepalived-1.1.20]#cp /usr/local/etc/keepalived/keepalived.conf/etc/keepalived/                           
+[root@localhost keepalived-1.1.20]# cp /usr/local/sbin/keepalived /usr/sbin/
+8、设置为服务，开机启动
+[root@localhost keepalived-1.1.20]# vi /etc/rc.local 
+
+五、主Keepalived配置
+1、修改配置文件
+[root@localhost keepalived-1.1.20]# vi /etc/keepalived/keepalived.conf 
+Linux下Keepalived <wbr>安装与配置
+
+六、备Keepalived配置
+     
+七、启动服务
+ 
+八、查看网卡信息
+1、主Keepalived网卡信息
+Linux下Keepalived <wbr>安装与配置
+
+九、验证测试
+1、在主服务器上新建一个网页，内容为 192.168.111.223
+2、在备用服务器上新建一个网页，内容为 192.168.111.100
+3、启动主备服务器的http服务和Keepalived服务
+4、通过浏览数，输入虚拟IP地址 192.168.111.150      
+5、关闭主服务器的Keepalived服务，通过浏览器输入IP地址192.168.111.150   
+6、再次启动主服务器的Keepalived服务，通过浏览器输入IP地址192.168.111.150
+ 
