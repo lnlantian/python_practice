@@ -1,0 +1,40 @@
+# 迅雷会员python爬虫
+
+#coding=utf8
+import urllib2
+import codecs
+import re
+import time
+from lxml import etree
+ 
+url1  = 'http://521xunlei.com/portal.php'
+path1 = '//*[@id="portal_block_62_content"]/div/ul/li[1]/a/@href'
+path3 = '//*[@class="t_f"]/font/text()'
+ 
+def geturlinfo(url,path,x):
+    request  = urllib2.Request(url)
+    response = urllib2.urlopen(request)
+    result   = response.read()
+    restree  = etree.HTML(result)
+    nodes    = restree.xpath(path)
+    if x == '1':
+        return nodes[0]
+    else:
+        i=0
+        open('thunder.txt','w').write('')
+        for node in nodes:
+            if re.search(':',node):
+                INFO = str(i)+': '+node.replace('\r\n','')
+                print INFO
+                open('thunder.txt','a').write(INFO.encode('utf8')+'\n')
+                i+=1
+ 
+if __name__ == '__main__':
+    while True:
+        print '===================start===================\n'
+        url2 = 'http://'+url1.replace('http://','').split('/')[0]+'/'+geturlinfo(url1, path1,'1')
+        print 'GET From: '+url2
+        geturlinfo(url2, path3, '0')
+        time.sleep(24*3600)
+ 
+        #首先获取对应div 再次xpath string(.) 组合
