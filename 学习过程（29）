@@ -1,0 +1,6 @@
+import os
+import sys
+
+b = sys.path[1]
+b.replace("\\","//")  # 将替换\ 替换为//
+print b.startswith("a")  # 查找字符串以a开头的 
