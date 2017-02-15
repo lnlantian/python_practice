@@ -1,0 +1,64 @@
+在Python里，string object和unicode object是两种不同的类型。
+string object是由characters组成的sequence，而unicode object是Unicode code units组成的sequence。
+string里的character是有多种编码方式的，比如单字节的ASCII，双字节的GB2312等等，再比如UTF-8。很明显要想解读string，必需知道string里的character是用哪种编码方式，然后才能进行。
+Unicode code unit又是什么东西呢？一个Unicode code unit是一个16-bit或者32-bit的数值，每个数值代表一个unicode符号。在python里，16-bit的unicode，对应的是ucs2编码。32-bit对应的是ucs4编码。是不是感觉string里character的编码没什么区别？
+在Python里，ucs2或者ucs4编码的，我们叫做unicode object，其他编码的我们就叫做string。
+至于python里的unicode到底是ucs2还是ucs4的，可以在编译时指定。例如Linux下，要用ucs2做unicode的编码，可以这样
+# ./configure --enable-unicode=ucs2 
+# make
+# make install
+下载的Windows预编译版本，一般都是ucs2的。要想知道某个python运行环境是ucs2还是ucs4，可以查看sys.maxunicde，65535就是ucs2的，另一个很大的数值就是ucs4。
+
+下面我们看看string和unicode在python里的不同
+我们先看看在简体中文Windows 2003系统下，系统编码是GBK
+>>> a = '你好'
+>>> a
+'/xc4/xe3/xba/xc3'
+>>> b = u'你好'
+>>> b
+u'/u4f60/u597d'
+>>> print a
+你好
+>>> print b
+你好
+>>> a.__class__
+<type 'str'>
+>>> b.__class__
+<type 'unicode'>
+>>> len(a)
+4
+>>> len(b)
+2
+##########################################################
+在一个系统编码为UTF-8的Linux环境下
+>>> a = '你好'
+>>> a
+'/xe4/xbd/xa0/xe5/xa5/xbd'
+>>> b = u'你好'
+>>> b
+u'/u4f60/u597d'
+>>> print a
+你好
+>>> print b
+你好
+>>> a.__class__
+<type 'str'>
+>>> b.__class__
+<type 'unicode'>
+>>> len(a)
+6
+>>> len(b)
+2
+##############################################################
+1、string直接用引号来表示，unicode在引号前加一个u
+2、直接输入的string常量会用系统缺省编码方式来编码，例如在GBK环境下，'你好'会编码成'/xc4/xe3/xba/xc3'，而在UTF-8环境下就成了'/xe4/xbd/xa0/xe5/xa5/xbd'。
+3、len(string)返回string的字节数，len(unicode)返回的是字符数
+4、很重要的一点，print unicode不会乱码。现在我们常用的Linux、Windows系统，都是支持unicode的，版本太老的不算。比如Windows 2003支持ucs2，所以在中文Windows2003下，除了可以正常显示缺省的GBK编码外，还可以正常显示ucs2编码。举个例子，还是在中文Windows 2003的GBK环境下：
+>>>a = '/xe4/xbd/xa0/xe5/xa5/xbd' # UTF-8的'你好'
+>>> print a
+浣犲ソ
+>>> b = unicode(a, "UTF-8")
+>>> b
+u'/u4f60/u597d'
+>>> print b
+你好
