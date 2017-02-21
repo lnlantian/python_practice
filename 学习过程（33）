@@ -66,7 +66,6 @@ if __name__ == "__main__":
 2.手机、邮箱、QQ等是可以变化的（定义在一起），姓名不可变（单独定义）。
 3.在另一个类中引用
 '''
-
 class Info(object):
     def __init__(self, phone, email, qq):
         self.phone = phone
@@ -79,17 +78,14 @@ class Info(object):
     def update_phone(self, newphone):
         self.phone = newphone
         print "手机号更改已更改"
-
+        
     def get_email(self):
         return self.email
-
-
 class AddrBook(object):
     '''docstring for AddBook'''
     def __init__(self, name, phone, email, qq):
         self.name = name
         self.info = Info(phone, email, qq)
-
 
 if __name__ == "__main__":
     Detian = AddrBook('handetian', '18210413001', 'detian@xkops.com', '123456')
@@ -99,7 +95,6 @@ if __name__ == "__main__":
     print Detian.info.get_email()
 
 4.内置功能(函数（）加与不加的区别）
-
 #!/usr/bin/env python
 #coding:utf8
 
@@ -116,7 +111,6 @@ class Books(object):
 
     def __call__(self):
         print "%s is written by %s" %(self.title, self.author)
-
 
 if __name__ == '__main__':
     pybook = Books('Core Python', 'Wesley')
@@ -148,13 +142,11 @@ class  Number(object):
     def __rsub__(self, other):
         return other - self.number
 
-
     def __gt__(self, other):
         if self.number > other:
             return True
         return False
-
-
+        
 if __name__ == '__main__':
     num = Number(10)
     print num + 20
@@ -162,4 +154,3 @@ if __name__ == '__main__':
     print num - 5
     print 11 - num
     print num > 20
-复制代码
