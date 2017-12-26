@@ -1,0 +1,30 @@
+安装好pyenv后，发现真的极其好用！
+
+故而再来总结一下，平时的使用方式：
+
+1.需要安装版本 
+
+(前提要先安装好依赖)
+$ sudo apt-get install libc6-dev gcc
+$ sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
+(查看版本)
+pyenv install --list 
+(指定版本安装)
+pyenv install 3.4.3 -v
+
+2.安装后，记得要更新
+
+ pyenv rehash
+
+3.查看已安装版本
+
+pyenv versions
+* system (set by /home/seisman/.pyenv/version)
+3.4.3
+
+4.指定版本
+
+pyenv global 3.4.3
+
+5.切回原来版本
+pyenv global system
