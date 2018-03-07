@@ -1,0 +1,17 @@
+python学习网站:
+
+http://funhacks.net/explore-python/Third-Party-Modules/click.html
+
+pip install colorama
+
+click
+
+模块: collections
+
+Python 的数据类型有 list, tuple, dict, str 等，collections 模块提供了额外 5 个高性能的数据类型：
+
+Counter: 计数器
+OrderedDict: 有序字典
+defaultdict: 带有默认值的字典
+namedtuple: 生成可以通过属性访问元素内容的 tuple 子类
+deque: 双端队列，能够在队列两端添加或删除元素
