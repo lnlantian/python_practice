@@ -1,0 +1,63 @@
+##python 实现tail -f功能
+
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+import sys
+import time
+import re
+import os
+
+class TailData():
+    def __init__(self,file_name,callback=sys.stdout.write):
+        self.file_name = file_name
+        self.callback = callback
+    def follow(self,n=10):
+        try:
+            with open(self.file_name) as f:
+                self._file = f
+                self.showLastLine(n)
+                self._file.seek(0,2)
+                while True:
+                    line = self._file.readline()
+                    if line:
+                        self.callback(line)
+        except Exception,e:
+            print e
+    def showLastLine(self, n):
+        last_lines = self._file.readlines()[-10:]
+        for line in last_lines:
+            self.callback(line)
+
+def read_data(file_data, file_f2):
+    reip = re.compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')
+    res = re.compile(r'rsync fail:.*')
+    ip_list = []
+    f_file = file_data
+    line = res.findall(f_file)
+    print line
+    if line[0]:
+        splitstr = line[0].split(":")
+    if splitstr:
+        if splitstr[1].strip() != '0':
+            pass
+        else:
+            with open(file_f2, "r") as f1:
+                f1_file = f1.readlines()
+                for f1line in f1_file:
+                    ip_data = reip.findall(f1line)
+                    if ip_data:
+                        ip_list.append(ip_data[0])
+
+    return ip_list
+
+
+if __name__ == '__main__':
+    file_f1 = '/usr/home/xxx/test.log'
+    file_f2 = '/usr/home/xxx/cc.log'
+    py_tail = TailData(file_f1)
+    last_data = py_tail.follow(20)
+    ip_list = read_data(last_data, file_f2)
+    print ip_list
+
+
