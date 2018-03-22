@@ -1,0 +1,79 @@
+# 请求接口数据
+import requests
+user_info = {'isFirst': "no"}
+r = requests.post("http://xxx:port/5/api_data", data=user_info)
+print r.text
+
+# txt to csv
+
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+
+from os import listdir
+from os.path import isfile, join
+import csv
+
+# read .txt文件
+def read_txt(txt_name):
+    data_list = []
+    with open(txt_name) as f:
+        for line in f:
+            # 当txt文件以逗号分隔
+            data_list.append(line.strip().split("\t"))
+            # 当txt文件以一个空格分隔
+            #data_list.append(line.strip().split(" "))
+    return data_list
+
+# write to csv
+def csv_writer(data, filename):
+    with open(filename, "wb") as csv_file:
+        # 与上面读csv文件操作相对应
+        #writer = csv.writer(csv_file, delimiter=',')
+        writer = csv.writer(csv_file)
+        for line in data:
+            #print line
+            writer.writerow(line)
+    return
+
+# out dir file list
+def file_list(path):
+    file_name_list = []
+    allfiles = [join(path, f) for f in listdir(path) if isfile(join(path, f))]
+    for file_name in allfiles:
+        if ".txt" in file_name:
+            file_name_list.append(file_name)
+    return file_name_list
+
+if __name__ == "__main__":
+
+    # input dirname
+    path = "/Users/wangsong3/PycharmProjects/test/11"
+    # output csvname
+    csv_name = "train.csv"
+    data_list = []
+    file_name_list = file_list(path)
+    for file_txt in file_name_list:
+        txt_data = read_txt(file_txt)
+        if txt_data:
+            data_list.extend(txt_data)
+    #for csv in data_list:
+    csv_writer(data_list, csv_name)
+
+
+# test time库用法
+
+import time
+
+
+now_time_1 = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(time.time()) - 60))
+now_time_2 = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(time.time()) + 60))
+now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(time.time())))
+if now_time_1 <= now_time <= now_time_2:
+        print 1
+else:
+        print 2
+
+
+
+
