@@ -1,0 +1,26 @@
+1、with
+
+基于类的实现
+一个上下文管理器的类，最起码要定义__enter__和__exit__方法。
+让我们来构造我们自己的开启文件的上下文管理器，并学习下基础知识。
+
+class File(object):
+    def __init__(self, file_name, method):
+        self.file_obj = open(file_name, method)
+    def __enter__(self):
+        return self.file_obj
+    def __exit__(self, type, value, traceback):
+        self.file_obj.close()
+        
+通过定义__enter__和__exit__方法，我们可以在with语句里使用它。我们来试试：
+
+with File('demo.txt', 'w') as opened_file:
+    opened_file.write('Hola!')
+我们的__exit__函数接受三个参数。这些参数对于每个上下文管理器类中的__exit__方法都是必须的。我们来谈谈在底层都发生了什么。
+with语句先暂存了File类的__exit__方法
+然后它调用File类的__enter__方法
+__enter__方法打开文件并返回给with语句
+打开的文件句柄被传递给opened_file参数
+我们使用.write()来写文件
+with语句调用之前暂存的__exit__方法
+__exit__方法关闭了文件
