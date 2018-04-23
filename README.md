@@ -11,3 +11,5 @@ http://www.wayneleo.com/post/Docker-%E8%BF%90%E8%A1%8C%E6%97%B6%E8%B5%84%E6%BA%9
 https://segmentfault.com/a/1190000002811652#articleHeader3
 
 http://www.cnblogs.com/maybe2030/category/709560.html
+
+http://django-practice-book.com/chapter2/section2.html
