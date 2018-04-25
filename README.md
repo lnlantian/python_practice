@@ -13,3 +13,6 @@ https://segmentfault.com/a/1190000002811652#articleHeader3
 http://www.cnblogs.com/maybe2030/category/709560.html
 
 http://django-practice-book.com/chapter2/section2.html
+
+### pycharm使用
+https://www.jianshu.com/p/2bfc19e1381c
