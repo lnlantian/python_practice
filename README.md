@@ -16,3 +16,6 @@ http://django-practice-book.com/chapter2/section2.html
 
 ### pycharm使用
 https://www.jianshu.com/p/2bfc19e1381c
+
+### python yield 用法
+https://blog.csdn.net/langwenjing/article/details/16345077
