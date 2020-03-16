@@ -19,3 +19,6 @@ https://www.jianshu.com/p/2bfc19e1381c
 
 ### python yield 用法
 https://blog.csdn.net/langwenjing/article/details/16345077
+
+### 常用数据结构的python实现
+https://juejin.im/post/5d5cac75518825637965edc3
