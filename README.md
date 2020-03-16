@@ -2,7 +2,8 @@
 This is my test project package, and review this coding.
 #学习常用知识的过程
 
-学习教程:http://funhacks.net/explore-python/Class/super.html
+###学习教程:
+* http://funhacks.net/explore-python/Class/super.html
 
 http://blog.shurenyun.com/mian-dui-da-gui-mo-xi-tong-gong-cheng-kan-facebookru-he-chu-li-gu-zhang-pai-cha/
 
