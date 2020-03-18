@@ -18,3 +18,5 @@
 
 ### 常用数据结构的python实现
 * https://juejin.im/post/5d5cac75518825637965edc3
+### KNN算法实例
+* https://blog.csdn.net/saltriver/article/details/52502253
